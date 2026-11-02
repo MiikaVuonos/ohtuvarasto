@@ -1,0 +1,6 @@
+# juurihakemistossa olevat tiedostot, joiden pääte on tmp
+/*.tmp
+
+# hakemistot
+__pycache__
+.pytest_cache
