@@ -24,6 +24,64 @@ class TestVarasto(unittest.TestCase):
         # vapaata tilaa pitäisi vielä olla tilavuus-lisättävä määrä eli 2
         self.assertAlmostEqual(self.varasto.paljonko_mahtuu(), 2)
 
+    # tässä alkaa miikerin säheltäminen
+    def test_lisataan_negatiivinen_maara(self):
+        self.varasto.lisaa_varastoon(8)
+        self.varasto.lisaa_varastoon(-2)
+        
+        # pitäisi olla 8
+        self.assertAlmostEqual(self.varasto.saldo, 8)
+
+    def test_lisataan_liikaa(self):
+        self.varasto.lisaa_varastoon(8)
+        self.varasto.lisaa_varastoon(4)
+        
+        # saldon pitäisi olla saman verran kuin tilavuus, eli 10
+        self.assertAlmostEqual(self.varasto.tilavuus, 10)
+        self.assertAlmostEqual(self.varasto.saldo, 10)        
+
+    def test_otetaan_liikaa(self):
+        self.varasto.lisaa_varastoon(4)
+        mita_otettiin = self.varasto.ota_varastosta(6)
+
+        # pitäisi olla 4
+        self.assertAlmostEqual(mita_otettiin, 4)
+
+        # pitäisi olla 0
+        self.assertAlmostEqual(self.varasto.saldo, 0)
+
+
+    def test_otetaan_epapositiivinen_maara(self):
+        self.varasto.lisaa_varastoon(4)
+        saatu_maara = self.varasto.ota_varastosta(0)
+
+        # pitäisi tulla 0
+        self.assertAlmostEqual(saatu_maara, 0)
+
+        saatu_maara = self.varasto.ota_varastosta(-2)
+
+        # pitäisi tulla 0
+        self.assertAlmostEqual(saatu_maara, 0)
+
+    def test_varasto_epapositiivisella_tilavuudella(self):
+        self.varasto = Varasto(0)
+
+        # pitäisi olla tilavuus 0
+        self.assertAlmostEqual(self.varasto.tilavuus, 0)
+
+        self.varasto = Varasto(-2)
+        
+        # pitäisi olla tilavuus 0
+        self.assertAlmostEqual(self.varasto.tilavuus, 0)
+
+    def test_negatiivinen_alkusaldo(self):
+        self.varasto = Varasto(10,-4)
+
+        # pitäisi olla 0
+        self.assertAlmostEqual(self.varasto.saldo, 0)
+
+    # loppuu tähän
+
     def test_ottaminen_palauttaa_oikean_maaran(self):
         self.varasto.lisaa_varastoon(8)
 
